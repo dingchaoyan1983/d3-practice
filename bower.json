@@ -1,0 +1,24 @@
+{
+"name": "d3-learning",
+"version": "1.0.0",
+  "authors": [
+    "Dane <270422767@qq.com>"
+  ],
+  "description": "my d3 learning place",
+  "keywords": [
+    "d3",
+    "learn"
+  ],
+  "license": "MIT",
+  "homepage": "http://dingchao-lonton.iteye.com/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+   "dependencies": {
+     "d3": "~3.5.5"
+  }
+}

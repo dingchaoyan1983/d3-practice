@@ -1,29 +1,33 @@
-CTYPE html>
+<DOCCTYPE html>
+<html>
 <meta charset="utf-8">
-<style>
+  <head>
+    <style>
 
-body {
-  font: 10px sans-serif;
-}
+    body {
+      font: 10px sans-serif;
+    }
 
-.bar rect {
-  fill: steelblue;
-  shape-rendering: crispEdges;
-}
+    .bar rect {
+      fill: steelblue;
+      shape-rendering: crispEdges;
+    }
 
-.bar text {
-  fill: #fff;
-}
+    .bar text {
+      fill: #fff;
+    }
 
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
+    .axis path, .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
 
-</style>
+  </style>
+
+  </head>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../d3.v3.min.js"></script>
 <script>
 
 // Generate a Bates distribution of 10 random variables.
@@ -85,3 +89,5 @@ svg.append("g")
 </script>
 
 
+</body>
+</html>

@@ -40,16 +40,16 @@
   var dragY = d3.behavior.drag();
 
   dragXY.on('drag', function() {
-    d3.select(this).attr('cx', d3.event.x);
-    d3.select(this).attr('cy', d3.event.y);
+    d3.select(this).attr('cx', Math.min(d3.event.x, 400));
+    d3.select(this).attr('cy', Math.min(d3.event.y, 500));
   });
 
   dragX.on('drag', function() {
-    d3.select(this).attr('cx', d3.event.x);
+    d3.select(this).attr('cx', Math.min(d3.event.x, 400));
   });
 
   dragY.on('drag', function() {
-    d3.select(this).attr('cy', d3.event.y);
+    d3.select(this).attr('cy', Math.min(d3.event.y, 500));
   });
 
   circleXY.call(dragXY);

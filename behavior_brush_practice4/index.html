@@ -9,6 +9,24 @@
       margin: 0;
       padding: 0;
     }
+
+    #container {
+      border: 1px solid #000000;
+    }
+
+    .extent {
+      stroke: #FFF;
+      fill-opacity: .125;
+      shape-rendering: crispEdges;
+    }
+
+    .point {
+      fill: #85ff97;
+    }
+
+    .selected {
+      fill: #ff565e;
+    }
   </style>
 </head>
 <body>
@@ -19,16 +37,37 @@
   var svg = d3.select('#container');
   var width = 500;
   var height = 500;
+  var data = d3.range(500).map(function() { return [Math.random() * width, Math.random() * width]; });
   var defaultExtent = [[100, 100], [300, 300]];
   var x = d3.scale.identity().domain([0, width]);
   var y = d3.scale.identity().domain([0, height]);
+
+  var point = svg.selectAll('.point')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('class', 'point')
+    .attr("cx", function(d) { return d[0]; })
+    .attr("cy", function(d) { return d[1]; })
+    .attr("r", 4);
+
   var brush = d3.svg.brush().x(x).y(y).extent(defaultExtent).on('brush', function() {
-    console.log(d3.event.mode);
-    console.log(d3.select(this));
-    console.log(brush.extent());
+    var extent = brush.extent();
+    point.each(function(d) { d.selected = false; });
+    search(point, extent[0][0], extent[0][1], extent[1][0], extent[1][1]);
+    point.classed("selected", function(d) { return d.selected; });
   });
 
-  var g = svg.append('g')
+  function search(point, x0, y0, x1, y1) {
+    point.each(function() {
+      var datum = d3.select(this).datum();
+      if (datum[0] > x0 && datum[0] < x1 && datum[1] > y0 && datum[1] < y1) {
+        datum.selected = true;
+      }
+    })
+  }
+
+  var g = svg.append('g');
   g.call(brush).call(brush.event);
 </script>
 </body>

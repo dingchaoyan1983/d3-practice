@@ -30,13 +30,13 @@
   </style>
 </head>
 <body>
-<svg id="container" width="500" height="500">
+<svg id="container">
 
 </svg>
 <script>
-  var svg = d3.select('#container');
   var width = 500;
   var height = 500;
+  var svg = d3.select('#container').attr('width', width).attr('height', height);
   var data = d3.range(500).map(function() { return [Math.random() * width, Math.random() * width]; });
   var defaultExtent = [[100, 100], [300, 300]];
   var x = d3.scale.identity().domain([0, width]);

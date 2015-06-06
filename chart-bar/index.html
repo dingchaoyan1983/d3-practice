@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>D3 Behavior - Drag</title>
+  <script src="../d3.v3.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      border: 1px solid #000000;
+    }
+
+    .axis path.domain, .axis g.tick>line{
+      fill: none;
+      stroke: #000;
+    }
+
+    rect.sells {
+      fill: #2269ff;
+    }
+
+  </style>
+</head>
+<body>
+<svg id="container">
+
+</svg>
+<script>
+  var margin = {top: 0, right: 0, bottom: 40, left: 40},
+    svgWidth = 960,
+    svgHeight = 500,
+    width = svgWidth - margin.left - margin.right,
+    height = svgHeight - margin.top - margin.bottom;
+
+  var svg = d3.select('#container').attr('width', svgWidth).attr('height', svgHeight);
+  var canvas = svg.append('g').attr('transform','translate(' + margin.left + ', ' + margin.top + ')');
+  var xScale = d3.scale.ordinal().rangeBands([0, width], 0.3);
+  var yScale = d3.scale.linear().range([height, 0]);
+  var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+  var yAxis = d3.svg.axis().scale(yScale).orient('left');
+
+  d3.tsv('./data.tsv', function(error, data) {
+    //parse the raw data
+    var _data = data.map(function (item) {
+      return {
+        month: item.month,
+        sells: +item.sells
+      }
+    });
+
+    xScale.domain(_data.map(function(d) {
+      return d.month;
+    }));
+    yScale.domain(d3.extent(_data, function (d) {
+      return d.sells
+    }));
+
+    canvas.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+    canvas.append('g')
+      .attr("class", "y axis")
+      .call(yAxis);
+
+    canvas.append('g')
+      .selectAll('.sells')
+      .data(_data)
+      .enter()
+      .append('rect')
+      .attr('class', 'sells')
+      .attr('x', function(d) {return xScale(d.month)})
+      .attr('y', function(d) {return yScale(d.sells)})
+      .attr('width', xScale.rangeBand())
+      .attr('height',function(d) { return height - yScale(d.sells)})
+
+  });
+</script>
+</body>
+</html>

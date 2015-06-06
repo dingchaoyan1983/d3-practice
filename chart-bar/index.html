@@ -10,6 +10,10 @@
       padding: 0;
     }
 
+    body {
+      font: 10px sans-serif;
+    }
+
     #container {
       border: 1px solid #000000;
     }
@@ -82,7 +86,7 @@
 
     barWrapper.append('text')
       .attr('fill', '#fff')
-      .attr('y', 15)
+      .attr('y', 10)
       .attr('x', 12)
       .text(function(d){ return d.sells; });
   });

@@ -19,7 +19,7 @@
       stroke: #000;
     }
 
-    rect.sells {
+    .sells rect{
       fill: #2269ff;
     }
 
@@ -68,17 +68,23 @@
       .attr("class", "y axis")
       .call(yAxis);
 
-    canvas.append('g')
-      .selectAll('.sells')
-      .data(_data)
-      .enter()
-      .append('rect')
-      .attr('class', 'sells')
-      .attr('x', function(d) {return xScale(d.month)})
-      .attr('y', function(d) {return yScale(d.sells)})
-      .attr('width', xScale.rangeBand())
-      .attr('height',function(d) { return height - yScale(d.sells)})
+    var barWrapper = canvas
+          .selectAll('.sells')
+          .data(_data)
+          .enter()
+          .append('g')
+          .attr('class', 'sells')
+          .attr('transform', function(d) {return 'translate(' + xScale(d.month) + ', ' + yScale(d.sells) + ')'});
 
+    barWrapper.append('rect')
+      .attr('width', xScale.rangeBand())
+      .attr('height',function(d) { return height - yScale(d.sells)});
+
+    barWrapper.append('text')
+      .attr('fill', '#fff')
+      .attr('y', 15)
+      .attr('x', 12)
+      .text(function(d){ return d.sells; });
   });
 </script>
 </body>

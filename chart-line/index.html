@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>D3 Behavior - Drag</title>
+  <script src="../d3.v3.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      border: 1px solid #000000;
+    }
+
+    .axis path.domain, .axis g.tick>line{
+      fill: none;
+      stroke: #000;
+    }
+
+    .line {
+      fill: none;
+      stroke: #A0522D;
+      stroke-width: 1.5px;
+    }
+
+  </style>
+</head>
+<body>
+<svg id="container">
+
+</svg>
+<script>
+  var margin = {top: 0, right: 0, bottom: 40, left: 40},
+    svgWidth = 960,
+    svgHeight = 500,
+    width = svgWidth - margin.left - margin.right,
+    height = svgHeight - margin.top - margin.bottom;
+
+  var svg = d3.select('#container').attr('width', svgWidth).attr('height', svgHeight);
+  var dateFormat = d3.time.format("%d-%b-%y").parse;
+  var canvas = svg.append('g').attr('transform','translate(' + margin.left + ', ' + margin.top + ')');
+  var xScale = d3.time.scale().range([0, width]);
+  var yScale = d3.scale.linear().range([height, 0]);
+  var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+  var yAxis = d3.svg.axis().scale(yScale).orient('left');
+
+  var line = d3.svg.line()
+    .x(function(d) { return xScale(d.date); })
+    .y(function(d) { return yScale(d.close); });
+
+
+  d3.tsv('./data.tsv', function(error, data) {
+    //parse the raw data
+    var _data = data.map(function(item) {
+      return {
+        date: dateFormat(item.date),
+        close: +item.close
+      }
+    });
+
+    xScale.domain(d3.extent(_data, function(d) {return d.date}));
+    yScale.domain(d3.extent(_data, function(d) {return d.close}));
+
+    canvas.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+    canvas.append('g')
+      .attr("class", "y axis")
+      .call(yAxis);
+
+    canvas.append("path")
+      .datum(_data)
+      .attr("class", "line")
+      .attr("d", line);
+  });
+
+</script>
+</body>
+</html>

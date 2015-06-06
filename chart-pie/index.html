@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>D3 Behavior - Drag</title>
+  <script src="../d3.v3.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font: 10px sans-serif;
+    }
+
+    #container {
+      border: 1px solid #000000;
+    }
+
+    .axis path.domain, .axis g.tick>line{
+      fill: none;
+      stroke: #000;
+    }
+
+    .sells rect{
+      fill: #2269ff;
+    }
+
+  </style>
+</head>
+<body>
+<svg id="container">
+
+</svg>
+<script>
+  var svgWidth = 960,
+    svgHeight = 500,
+    radius = Math.min(svgWidth/2, svgHeight/2);
+
+  var color = d3.scale.category20();
+
+  d3.select('#container').attr('height', svgHeight).attr('width', svgWidth);
+
+  var arc = d3.svg.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+  var pie = d3.layout.pie()
+    .sort(null)
+    .value(function(d) { return d.sells; });
+
+  var canvas = d3.select('#container').append('g')
+    .attr('transform', 'translate(' + svgWidth / 2 + ', ' + svgHeight / 2 + ')');
+
+  d3.tsv('./data.tsv', function(error, data) {
+    //parse the raw data
+    var _data = data.map(function (item) {
+      return {
+        month: item.month,
+        sells: +item.sells
+      }
+    });
+
+    var g = canvas.selectAll(".arc")
+      .data(pie(data))
+      .enter().append("g")
+      .attr("class", "arc");
+
+    g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data.month); });
+
+    g.append("text")
+      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.data.month; });
+  });
+</script>
+</body>
+</html>

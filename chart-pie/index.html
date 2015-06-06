@@ -63,7 +63,7 @@
     });
 
     var g = canvas.selectAll(".arc")
-      .data(pie(data))
+      .data(pie(_data))
       .enter().append("g")
       .attr("class", "arc");
 

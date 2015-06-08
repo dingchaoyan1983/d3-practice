@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: A simple scatterplot with value labels</title>
+      <script type="text/javascript" src="../d3.v3.min.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */
+      body {
+        font: 10px sans-serif;
+      }
+      .rect {
+        fill: #45beff;
+      }
+		</style>
+	</head>
+	<body>
+  <button id="push">数组末尾添加一个元素</button>
+  <button id="shift">数组头部弹出一个元素</button>
+  <button id="splice">更新数据第2个元素</button>
+  <button id="auto">自动持续更新</button>
+  <button id="stop">自动持续更新停止</button>
+  <div><label>数组： </label><span id="data"></span></div>
+
+
+  <script type="text/javascript">
+      var width = height = 500;
+      var data = d3.range(10).map(function() { return Math.random() * height; });
+      var rectWidth = 30;
+      var margin = 10;
+      var svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
+      var timeoutRef;
+      var output = d3.select('#data')
+
+      function drawRect () {
+        var updates = svg.selectAll('.rect')
+          .data(data);
+
+        var enter = updates.enter();
+        var exit = updates.exit();
+
+        //update
+        updates
+          //.transition()
+          .attr('height', function(d) {return d});
+
+        //enter
+        enter.append('rect')
+          .attr('class', 'rect')
+          .attr('x', function (d, i){ return (rectWidth + margin) * i})
+          .attr('width', rectWidth)
+          //.transition()
+          .attr('height', function(d){ return d; });
+        //exit
+        exit.remove();
+      }
+
+      function outputData() {
+        output.text(data. join(' , '))
+      }
+
+      var reDrawRect = drawRect;
+
+      drawRect();
+
+      d3.select('#push').on('click', function() {
+        data.push(Math.random() * height);
+        outputData();
+        reDrawRect();
+      });
+
+      d3.select('#shift').on('click', function() {
+        data.shift();
+        outputData();
+        reDrawRect();
+      });
+
+      d3.select('#splice').on('click', function() {
+        data.splice(1, 1, Math.random() * height);
+        outputData();
+        reDrawRect();
+      });
+
+      d3.select('#auto').on('click', function() {
+        timeoutRef = window.setInterval(function() {
+          data.push(Math.random() * height);
+          data.shift();
+          outputData();
+          reDrawRect();
+        }, 1000);
+      });
+
+      d3.select('#stop').on('click', function() {
+        if(!!timeoutRef) {
+          window.clearInterval(timeoutRef);
+        }
+      });
+		</script>
+	</body>
+</html>
+

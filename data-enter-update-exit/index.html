@@ -25,12 +25,16 @@
 
   <script type="text/javascript">
       var width = height = 500;
-      var data = d3.range(10).map(function() { return Math.random() * height; });
+      var data = d3.range(10).map(function() { return generateRandom(); });
       var rectWidth = 30;
       var margin = 10;
       var svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
       var timeoutRef;
-      var output = d3.select('#data')
+      var output = d3.select('#data');
+
+      function generateRandom() {
+        return Math.floor(Math.random() * height);
+      }
 
       function drawRect () {
         var updates = svg.selectAll('.rect')
@@ -61,10 +65,11 @@
 
       var reDrawRect = drawRect;
 
+      outputData();
       drawRect();
 
       d3.select('#push').on('click', function() {
-        data.push(Math.random() * height);
+        data.push(generateRandom());
         outputData();
         reDrawRect();
       });
@@ -76,14 +81,14 @@
       });
 
       d3.select('#splice').on('click', function() {
-        data.splice(1, 1, Math.random() * height);
+        data.splice(1, 1, generateRandom());
         outputData();
         reDrawRect();
       });
 
       d3.select('#auto').on('click', function() {
         timeoutRef = window.setInterval(function() {
-          data.push(Math.random() * height);
+          data.push(generateRandom());
           data.shift();
           outputData();
           reDrawRect();

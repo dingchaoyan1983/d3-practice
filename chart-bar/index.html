@@ -27,6 +27,10 @@
       fill: #2269ff;
     }
 
+    .sells rect:hover {
+      fill: #fb83ff;
+    }
+
   </style>
 </head>
 <body>
@@ -46,6 +50,7 @@
   var yScale = d3.scale.linear().range([height, 0]);
   var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
   var yAxis = d3.svg.axis().scale(yScale).orient('left');
+
 
   d3.tsv('./data.tsv', function(error, data) {
     //parse the raw data
@@ -82,7 +87,7 @@
 
     barWrapper.append('rect')
       .attr('width', xScale.rangeBand())
-      .attr('height',function(d) { return height - yScale(d.sells)});
+      .attr('height',function(d) { return height - yScale(d.sells)}).on('click', function(d) {console.log(d)});
 
     barWrapper.append('text')
       .attr('fill', '#fff')

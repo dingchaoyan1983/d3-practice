@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>D3: A simple scatterplot with value labels</title>
+  <script type="text/javascript" src="../d3.v3.min.js"></script>
+  <style type="text/css">
+    /* No style rules here yet */
+    body {
+      font: 15px sans-serif;
+    }
+    .rect {
+      fill: #45beff;
+    }
+
+    svg {
+      font: 10px sans-serif;
+    }
+
+    path.domain{
+      fill: none;
+      stroke: #000;
+    }
+
+    .tick line{
+      stroke: #000;
+    }
+
+    path.line {
+      fill: none;
+      stroke: #000;
+    }
+
+    #pathOutput {
+      width: 500px;
+      word-break: break-all;
+      margin-top: 40px;
+    }
+
+
+  </style>
+</head>
+<body>
+<div id="output"></div>
+<div id="pathOutput"></div>
+<svg id="container"></svg>
+<script type="text/javascript">
+  var svgWidth = 500;
+  var svgHeight = 500;
+  var margin = {top: 50, left: 50, right: 50, bottom: 50};
+  var width = svgWidth - margin.left - margin.right;
+  var height = svgHeight - margin.top - margin.bottom;
+
+  var svg = d3.select('#container').attr('width', svgWidth).attr('height', svgHeight);
+  var canvas = svg.append('g').attr('transform', 'translate(' + margin.top + ', ' + margin.left + ')');
+  var alphabet = d3.shuffle(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']);
+
+  var i = 0;
+  var number = 10;
+  var base = 10000;
+  var data = d3.shuffle(alphabet.slice(i = Math.floor(Math.random() * (alphabet.length - number)), i + number)).map(function(i) {
+    return {
+      x: i,
+      y: Math.round(Math.random() * base)
+    };
+  });
+
+  var dataStr = data.reduce(function(previousValue, currentValue){
+      return previousValue + "{x: '" +currentValue.x + "', y: " +currentValue.y+ "}<br/>";
+  }, 'data is: <br/>');
+
+  function outputData() {
+    d3.select('#output').html(dataStr);
+  }
+
+  function outputPathStr() {
+    d3.select('#pathOutput').html(line(data))
+  }
+
+  outputData();
+
+  var xDomain = data.map(function(i) { return i.x });
+  var yDomain = d3.extent(data, function(i) { return i.y});
+
+  var xScale = d3.scale.ordinal().domain(xDomain).rangeBands([0, width], 0.3);
+  var yScale = d3.scale.linear().domain(yDomain).range([height, 0]);
+
+  var xAxisFunc = d3.svg.axis().scale(xScale).orient('bottom');
+  var yAxisFunc = d3.svg.axis().scale(yScale).orient('left');
+
+  var xAxis = canvas.append('g').attr('transform', 'translate(0, ' + height + ')').call(xAxisFunc);
+  var yAxis = canvas.append('g').call(yAxisFunc);
+
+  var line = d3.svg.line().x(function(d) {return xScale(d.x); }).y(function(d) { return yScale(d.y); });
+  console.log(line(data));
+  canvas.append('path').datum(data).attr('class', 'line').attr('d', line);
+  outputPathStr();
+
+</script>
+</body>
+</html>
+

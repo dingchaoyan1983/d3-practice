@@ -37,15 +37,15 @@
       }
 
       function drawRect () {
-        var updates = svg.selectAll('.rect')
+        var elements = svg.selectAll('.rect')
           .data(data);
 
-        var enter = updates.enter();
-        var exit = updates.exit();
+        var enter = elements.enter();
+        var exit = elements.exit();
 
         //update
-        updates
-          //.transition()
+        elements
+          .transition()
           .attr('height', function(d) {return d});
 
         //enter
@@ -53,7 +53,8 @@
           .attr('class', 'rect')
           .attr('x', function (d, i){ return (rectWidth + margin) * i})
           .attr('width', rectWidth)
-          //.transition()
+          .attr('height', 0)
+          .transition()
           .attr('height', function(d){ return d; });
         //exit
         exit.remove();
@@ -96,6 +97,9 @@
       });
 
       d3.select('#stop').on('click', function() {
+        console.log(this);
+        console.log(arguments);
+        console.log(d3.event)
         if(!!timeoutRef) {
           window.clearInterval(timeoutRef);
         }

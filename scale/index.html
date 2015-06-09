@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: A simple scatterplot with value labels</title>
+      <script type="text/javascript" src="../d3.v3.min.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */
+      body {
+        font: 10px sans-serif;
+      }
+      .rect {
+        fill: #45beff;
+      }
+		</style>
+	</head>
+	<body>
+  <svg id="container"></svg>
+  <script type="text/javascript">
+    /***************************************************************/
+    /***************************************************************/
+    /***************************************************************/
+    var range = [0, 500];
+    var domain1 = [0, 3000]
+    var scale1 = d3.scale.linear().domain(domain1).range(range);
+    console.log('"scale1(2000) without round ===> "' + scale1(2000));
+    console.log('"scale1.invert(200) without round ===> "' + scale1.invert(200));
+    console.log('-----------------------------------------------------');
+
+    var scale2 = d3.scale.linear().domain(domain1).rangeRound(range);
+    console.log('"scale1(2000) with round ===> "' + scale2(2000))
+    console.log('"scale1.invert(200) with round ===> "' + scale2.invert(200));
+    console.log('-----------------------------------------------------');
+    /***************************************************************/
+    /***************************************************************/
+    /***************************************************************/
+
+
+    //ordinal
+    var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    var domain = d3.range(10).map(function(){ return alphabet[Math.floor(Math.random() * alphabet.length)]});
+    var range1 = d3.range(10).map(function(){ return alphabet[Math.floor(Math.random() * alphabet.length)].toUpperCase()});
+
+    console.log('domain for ordinal is ===> ' + domain);
+    console.log('range for ordinal is ===> ' + range1)
+    var scale3 = d3.scale.ordinal().domain(domain).range(range1);
+    console.log('scale3("' +domain[0]+'") ===> ' + scale3(domain[0]));
+    var scale4 = d3.scale.ordinal().domain(['a', 'b', 'c', 'd', 'e']).rangeRoundBands([0, 100]);
+    console.log("scale4('b') ===>" + scale4('b'));
+    console.log("scale4('c') ===> " + scale4('c'));
+    console.log("scale4.rangeBand() ===> " + scale4.rangeBand())
+  </script>
+	</body>
+</html>
+

@@ -44,13 +44,19 @@
     var range1 = d3.shuffle(alphabet.slice(i = Math.floor(Math.random() * (alphabet.length - number)), i + number).map(function(i){return i.toUpperCase()}));
 
     console.log('domain for ordinal is ===> ' + domain);
-    console.log('range for ordinal is ===> ' + range1)
+    console.log('range for ordinal is ===> ' + range1);
     var scale3 = d3.scale.ordinal().domain(domain).range(range1);
     console.log('scale3("' +domain[0]+'") ===> ' + scale3(domain[0]));
     var scale4 = d3.scale.ordinal().domain(['a', 'b', 'c', 'd', 'e']).rangeRoundBands([0, 100]);
     console.log("scale4('b') ===>" + scale4('b'));
     console.log("scale4('c') ===> " + scale4('c'));
-    console.log("scale4.rangeBand() ===> " + scale4.rangeBand())
+    console.log("scale4.rangeBand() ===> " + scale4.rangeBand());
+
+
+    var scale5 = d3.scale.category10().domain(domain);
+    console.log("scale5('" + domain[0] + "') ===> " + scale5(domain[0]));
+    console.log("scale5('" + domain[2] + "') ===> " + scale5(domain[2]));
+
   </script>
 	</body>
 </html>

@@ -37,9 +37,11 @@
 
 
     //ordinal
+    var i = 0;
+    var number = 10
     var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-    var domain = d3.range(10).map(function(){ return alphabet[Math.floor(Math.random() * alphabet.length)]});
-    var range1 = d3.range(10).map(function(){ return alphabet[Math.floor(Math.random() * alphabet.length)].toUpperCase()});
+    var domain = d3.shuffle(alphabet.slice(i = Math.floor(Math.random() * (alphabet.length - number)), i + number));
+    var range1 = d3.shuffle(alphabet.slice(i = Math.floor(Math.random() * (alphabet.length - number)), i + number).map(function(i){return i.toUpperCase()}));
 
     console.log('domain for ordinal is ===> ' + domain);
     console.log('range for ordinal is ===> ' + range1)
